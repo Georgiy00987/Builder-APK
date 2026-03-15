@@ -8,7 +8,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-      - run: sudo apt-get update && sudo apt-get install -y build-essential git openjdk-17-jdk unzip zip libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev zlib1g-dev autoconf libtool pkg-config
+      - run: sudo apt-get update && sudo apt-get install -y build-essential git openjdk-17-jdk unzip zip libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev zlib1g-dev autoconf libtool pkg-config librsvg2-bin
+      - name: Convert icon SVG to PNG
+        run: rsvg-convert -w 512 -h 512 icon.svg -o icon.png
       - run: pip install --upgrade buildozer "cython<3.0"
       - name: Build APK
         run: |

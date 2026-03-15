@@ -1,40 +1,37 @@
 name: Build APK
-
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-22.04
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-
-      - name: Cache Buildozer global directory
-        uses: actions/cache@v4
+      - name: Install system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential git openjdk-17-jdk unzip zip libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev zlib1g-dev autoconf libtool pkg-config
+      - name: Install Buildozer
+        run: pip install --upgrade buildozer cython
+      - name: Build APK
+        run: buildozer -v android debug 2>&1 | tee build.log
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        if: always()
         with:
-          path: ~/.buildozer
-          key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
-          restore-keys: |
-            ${{ runner.os }}-buildozer-
-
-      - name: Cache .buildozer directory
-        uses: actions/cache@v4
+          name: app-debug
+          path: bin/*.apk
+          if-no-files-found: warn
+      - name: Upload log
+        uses: actions/upload-artifact@v4
+        if: always()
         with:
-          path: .buildozer
-          key: ${{ runner.os }}-buildozer-local-${{ hashFiles('buildozer.spec') }}
-          restore-keys: |
-            ${{ runner.os }}-buildozer-local-
-
-      - name: Install dependencies
+          name: build-log
+          path: build.log      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \

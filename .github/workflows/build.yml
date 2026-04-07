@@ -16,8 +16,6 @@ jobs:
           sudo update-alternatives --set java /usr/lib/jvm/temurin-17-jdk-amd64/bin/java
           sudo update-alternatives --set javac /usr/lib/jvm/temurin-17-jdk-amd64/bin/javac
           java -version
-      - name: Convert icon
-        run: rsvg-convert -w 512 -h 512 icon.svg -o icon.png
       - run: pip install --upgrade buildozer "cython<3.0"
       - name: Build APK
         run: |

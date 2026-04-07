@@ -1,12 +1,12 @@
 [app]
-title = GhostRun Studio
-package.name = ghostrunstudio
-package.domain = org.ghostrun
+title = 
+package.name = 
+package.domain = org.
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,txt
 source.include_patterns = custom/*.py
 version = 1.0
-requirements = python3,kivy==2.3.0,aiohttp,multidict,yarl
+requirements = python3
 orientation = portrait
 android.permissions = INTERNET
 android.api = 34
